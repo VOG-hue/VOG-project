@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carte Super Admin</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet"/>
+
+
+  <!-- Ton CSS -->
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+ 
+
+<!-- FORM + AVATAR combinés -->
+<form id="avatar-form" action="/upload-avatar" method="POST" enctype="multipart/form-data">
+  <div class="god-mode-card">
+    <!-- Section gauche -->
+    <div class="user-content">
+      <!-- Avatar cliquable -->
+      <label for="avatar-input" class="avatar-container" style="cursor: pointer;">
+        <img src="<%= user.avatar || '/uploads/avatar-default.jpg' %>" alt="Avatar" class="avatar" id="avatar-preview"/>
+      </label>
+      <input type="file" id="avatar-input" name="avatar" accept="image/*" style="display: none;"/>
+
+      <!-- Glow (si nécessaire) -->
+      <div class="glow-wrapper"></div>
+
+      <!-- Texte -->
+      <div class="user-text">
+        <div class="username">Super Admin</div>
+        <div class="role">Super Administrateur</div>
+      </div>
+    </div>
+
+    <!-- Section droite -->
+    <div class="right-section">
+      <div class="status-badge online">
+        <span class="status-dot"></span>
+      </div>
+      <button type="button" class="action-btn">
+        <span class="settings-icon">⚙️</span>
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- JS pour animation et upload -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Hover animation
+    const card = document.querySelector('.god-mode-card');
+    card.addEventListener('mouseenter', function () {
+      this.style.transform = 'translateY(-5px) scale(1.02)';
+      this.style.boxShadow = '0 0 40px rgba(255, 153, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.4)';
+    });
+    card.addEventListener('mouseleave', function () {
+      this.style.transform = 'translateY(0) scale(1)';
+      this.style.boxShadow = '0 0 30px rgba(255, 153, 0, 0.5), 0 8px 25px rgba(0, 0, 0, 0.3)';
+    });
+
+    // Gestion avatar upload
+    const avatarInput = document.getElementById('avatar-input');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const avatarForm = document.getElementById('avatar-form');
+
+    avatarInput.addEventListener('change', () => {
+      if (avatarInput.files && avatarInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => avatarPreview.src = e.target.result;
+        reader.readAsDataURL(avatarInput.files[0]);
+        avatarForm.submit(); // Envoi automatique
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

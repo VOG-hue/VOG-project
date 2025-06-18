@@ -1,0 +1,7 @@
+{
+    "window.autoDetectColorScheme": false,
+    "window.closeWhenEmpty": false,
+    "workbench.preferredDarkColorTheme": "Abyss",
+    "workbench.preferredHighContrastColorTheme": "Visual Studio Dark",
+    "workbench.colorTheme": "Abyss"
+}

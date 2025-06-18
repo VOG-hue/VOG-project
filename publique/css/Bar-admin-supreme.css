@@ -1,0 +1,521 @@
+/* ==== CARTE STYLISÉE AVEC ANIMATIONS ==== */
+/* Card principale avec une seule bordure animée */
+.god-mode-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 18px;
+  min-width: 320px;
+  height: 56px;
+  border-radius: 20px;
+
+  background: linear-gradient(135deg,
+    rgba(255, 102, 0, 0.1),
+    rgba(255, 204, 0, 0.05),
+    rgba(255, 102, 0, 0.1)
+  );
+  background-size: 400% 400%;
+  animation: backgroundWave 15s ease-in-out infinite;
+
+  color: white;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+@keyframes backgroundWave {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Bordure animée premium avec glow amélioré */
+.god-mode-card::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -20px;
+  bottom: -4px;
+  left: -4px;
+  border-radius: 20px;
+  
+  background: linear-gradient(45deg,
+    #f13737, #ce8c11, #f04c4c, #ff5927, #ffd900
+  );
+  background-size: 500% 500%;
+  animation: borderShift 4s ease-in-out infinite;
+
+  box-shadow:
+    0 0 5px rgba(241, 102, 102, 0.8),
+    0 0 15px rgba(250, 113, 113, 0.6),
+    0 0 25px rgba(255, 138, 128, 0.4),
+    0 0 35px rgba(250, 236, 113, 0.2);
+  pointer-events: none;
+  
+  /* Effet de pulsation */
+  filter: brightness(1) saturate(1.2);
+}
+
+/* Animation améliorée avec courbe naturelle */
+@keyframes borderShift {
+  0%   { 
+    background-position: 0% 50%;
+    filter: brightness(1) saturate(1.2);
+  }
+  25%  { 
+    background-position: 100% 0%;
+    filter: brightness(1.1) saturate(1.3);
+  }
+  50%  { 
+    background-position: 100% 100%;
+    filter: brightness(1.2) saturate(1.4);
+  }
+  75%  { 
+    background-position: 0% 100%;
+    filter: brightness(1.1) saturate(1.3);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: brightness(1) saturate(1.2);
+  }
+}
+
+/* Effet hover pour interaction */
+.god-mode-card:hover::before {
+  animation-duration: 2s;
+  box-shadow:
+    0 0 8px rgba(241, 102, 102, 1),
+    0 0 20px rgba(250, 113, 113, 0.8),
+    0 0 30px rgba(255, 138, 128, 0.6),
+    0 0 40px rgba(250, 236, 113, 0.3);
+}
+
+
+/* Contenu interne */
+.god-mode-card .card-content {
+  background: #2c2f36;
+  border-radius: 10px;
+  padding: 18px;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+@keyframes nitroGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  25% {
+    background-position: 100% 50%;
+    filter: hue-rotate(45deg) brightness(1.1);
+  }
+  50% {
+    background-position: 100% 100%;
+    filter: hue-rotate(90deg) brightness(1.2);
+  }
+  75% {
+    background-position: 0% 100%;
+    filter: hue-rotate(135deg) brightness(1.1);
+  }
+}
+
+/* Hover premium */
+.god-mode-card:hover {
+  box-shadow: 0 0 25px rgba(255, 217, 0, 0.3);
+}
+
+.god-mode-card:hover::before {
+  animation-duration: 2s;
+}
+
+
+/* Avatar stylisé avec animations */
+.avatar-container {
+  position: relative;
+  width: 36px; /* AGRANDI */
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: avatarPulse 2s ease-in-out infinite alternate;
+}
+
+/* Animation de pulsation pour l'avatar */
+@keyframes avatarPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.avatar-container .avatar {
+  width: 44px; /* Avant : 32px */
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #ff9900; /* Légèrement plus épaisse */
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 20px rgba(255, 153, 0, 0.35),
+    inset 0 3px 6px rgba(255, 255, 255, 0.08); /* Profondeur renforcée */
+}
+
+
+.avatar-container::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 136, 0, 0.45) 20%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  animation: avatarHalo 2.5s ease-in-out infinite;
+  filter: blur(4px);
+  opacity: 0.7;
+}
+
+/* Glow animé mieux visible */
+@keyframes avatarHalo {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: blur(3px);
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: blur(6px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: blur(3px);
+  }
+}
+
+
+.avatar-container::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 153, 0, 0.4) 10%, transparent 60%);
+  animation: particleGlow 4s infinite ease-in-out alternate;
+  z-index: 0;
+}
+
+
+
+@keyframes particleGlow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+
+/* Photo de profil */
+.profile-pic-wrapper {
+  width: 20px; 
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid #ff9900;
+}
+
+.premium-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* SECTION CENTRALE - Groupe avatar + texte */
+.user-content {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* AUGMENTÉ l'espacement entre avatar et texte */
+  flex: 1;
+  min-width: 0;
+  margin-right: 8px;
+  padding-left: 4px; /* AJOUT : Petit padding à gauche */
+}
+
+/* Section texte - ALIGNEMENT PARFAIT */
+/* ==== Effet Super Admin inspiré Discord Nitro ==== */
+.username {
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffb347; /* Orange nitro */
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  text-shadow:
+    0 0 3px rgba(255, 170, 60, 0.7),
+    0 0 6px rgba(255, 120, 0, 0.5),
+    0 0 12px rgba(255, 120, 0, 0.3);
+  animation: pulseUsername 3s ease-in-out infinite;
+}
+
+/* Contour animé façon halo électrique */
+.username::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -4px;
+  right: -4px;
+  bottom: -2px;
+  border-radius: 6px;
+  background: radial-gradient(circle, rgba(255, 150, 0, 0.2) 0%, transparent 80%);
+  filter: blur(4px);
+  opacity: 0.8;
+  z-index: -1;
+  animation: glowLoop 4s infinite ease-in-out;
+}
+
+/* Nom qui pulse légèrement */
+@keyframes pulseUsername {
+  0%, 100% {
+    text-shadow:
+      0 0 2px rgba(255, 140, 0, 0.6),
+      0 0 5px rgba(255, 100, 0, 0.4),
+      0 0 10px rgba(255, 100, 0, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow:
+      0 0 4px rgba(255, 180, 50, 0.8),
+      0 0 8px rgba(255, 130, 0, 0.5),
+      0 0 14px rgba(255, 100, 0, 0.4);
+    transform: scale(1.02);
+  }
+}
+
+/* Glow pulsé autour */
+@keyframes glowLoop {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+
+
+
+/* Texte role - STYLISÉ */
+.role {
+  font-size: 11px;
+  color: #b8b9bf;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  line-height: 1.2;
+  display: block;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+/* SECTION DROITE - Status + Bouton */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Badge de statut stylisé */
+.status-badge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  animation: statusPulse 2.4s ease-in-out infinite;
+  box-shadow:
+    0 0 6px rgba(35, 165, 90, 0.5),
+    0 0 12px rgba(35, 165, 90, 0.3);
+}
+
+/* Dot centrale avec dégradé */
+.status-badge.online .status-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #29cc7a 0%, #1e8e4f 100%);
+  display: block;
+  box-shadow:
+    inset 0 1px 3px rgba(255, 255, 255, 0.3),
+    0 0 3px rgba(35, 165, 90, 0.6);
+  z-index: 2;
+  position: relative;
+}
+
+/* Halo animé autour */
+.status-badge::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(35, 165, 90, 0.3) 0%, transparent 70%);
+  z-index: 1;
+  animation: haloPulse 2.4s ease-in-out infinite;
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Animation pulsation plus naturelle */
+@keyframes statusPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+/* Halo flou qui pulse doucement */
+@keyframes haloPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 0.5; }
+}
+
+
+/* Bouton paramètres bien centré et stylisé */
+.action-btn {
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.1), rgba(255, 153, 0, 0.05));
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  padding: 0; /* ❗️ Supprime le padding pour meilleur centrage */
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  color: #ffcc66;
+  position: relative;
+  overflow: hidden;
+  margin-left: 7px;
+}
+
+/* Réglage de l'icône centrée */
+.settings-icon {
+  font-size: 16px; /* ✅ Garde une taille fixe */
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, color 0.4s ease;
+  will-change: transform;
+  margin-left: 14px;
+}
+
+
+/* Hover effets boostés */
+.action-btn:hover {
+  background: rgba(255, 153, 0, 0.2);
+  color: #ffaa00;
+  box-shadow:
+    0 0 8px rgba(255, 153, 0, 0.6),
+    0 0 14px rgba(255, 153, 0, 0.4),
+    0 0 20px rgba(255, 153, 0, 0.3);
+  transition: all 0.3s ease;
+  transform: scale(1.05); /* Légère élévation */
+}
+
+/* Icône animée avec glow aussi */
+.action-btn:hover .settings-icon {
+  transform: rotate(180deg) scale(1.1);
+  color: #ffcc66;
+  text-shadow:
+    0 0 6px rgba(255, 204, 102, 0.6),
+    0 0 10px rgba(255, 204, 102, 0.4);
+}
+
+@keyframes shimmerSwipe {
+  0%   { left: -150%; }
+  50%  { left: 100%; }
+  100% { left: 150%; }
+}
+
+
+/* Hover : action-btn */
+.action-btn:hover {
+  background: rgba(255, 153, 0, 0.15);
+  color: #ff9900;
+  box-shadow: 0 0 12px rgba(255, 153, 0, 0.3);
+}
+
+/* Hover : rotation douce de l’icône */
+.action-btn:hover .settings-icon {
+  transform: rotate(180deg);
+  color: #ffbb33;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .god-mode-card {
+    padding: 5px 12px;
+    gap: 8px;
+    min-width: 200px;
+    max-width: 240px;
+    height: 32px;
+  }
+  
+  .user-content {
+    gap: 8px;
+  }
+  
+  .right-section {
+    gap: 4px;
+  }
+  
+  .avatar-container {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .profile-pic-wrapper {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .username {
+    font-size: 10px;
+  }
+  
+  .role {
+    font-size: 8px;
+  }
+  
+  .action-btn {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+  }
+  
+  .settings-icon {
+    font-size: 12px;
+  }
+}

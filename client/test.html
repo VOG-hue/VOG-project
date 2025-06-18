@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lenis Scroll Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: sans-serif;
+      background: #111;
+      color: white;
+      overflow: hidden; /* Ne pas scroller nativement */
+    }
+
+    body[data-lenis-scroll] {
+      overflow: hidden; /* Nécessaire pour Lenis */
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #222;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .navbar.hide {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .content {
+      padding-top: 80px;
+    }
+
+    .section {
+      height: 120vh;
+      border-bottom: 1px solid #444;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body data-lenis-scroll>
+
+  <div class="navbar">Navbar</div>
+
+  <div class="content">
+    <div class="section">Scroll down 👇</div>
+    <div class="section">Encore 👇</div>
+    <div class="section">Et encore 👇</div>
+    <div class="section">Fin 👇</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.36/bundled/lenis.min.js"></script>
+
+  <script>
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+
+    let lastScroll = 0;
+    const navbar = document.querySelector(".navbar");
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+
+      const currentScroll = lenis.scroll;
+      if (currentScroll > lastScroll && currentScroll > 50) {
+        navbar.classList.add("hide");
+      } else if (currentScroll < lastScroll) {
+        navbar.classList.remove("hide");
+      }
+
+      lastScroll = currentScroll;
+    }
+
+    requestAnimationFrame(raf);
+  </script>
+</body>
+</html>

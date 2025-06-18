@@ -2,52 +2,245 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VOG - Watch HD Anime & Series</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
 
+<body>
+  <!-- Particles background -->
+  <div id="tsparticles"></div>
+  <div class="animated-bg"></div>
+  
   <!-- Barre de navigation -->
   <header class="navbar">
-    <div class="logo">🎬 <span>VOG</span></div>
-    <input type="text" placeholder="Search anime, series..." class="search-bar" />
-    <div class="user-actions">
-      <a href="/login" class="btn">Login</a>
-      <a href="/register" class="btn">Register</a>
+    <a href="/" class="logo">🎬 <span class="shine-text">VOG</span></a>
+    <div class="search-wrapper">
+      <input type="text" placeholder="Search anime, series..." class="search-bar" aria-label="Search" />
+      <i class="fas fa-search search-icon"></i>
     </div>
+    <nav class="auth-buttons">
+      <a href="/login" class="btn login-btn fade-in-up" style="animation-delay: 1.3s;">Login</a>
+      <a href="/register" class="btn register-btn fade-in-up" style="animation-delay: 1.4s;">Register</a>
+    </nav>
   </header>
 
-  <!-- Section Hero -->
-  <section class="hero">
-    <h1>Watch your favorite anime & series</h1>
-    <p>Fast streaming. HD Quality. 100% Free.</p>
-    <a href="/catalog" class="hero-btn">Explore Catalog</a>
-  </section>
+  <!-- Section principale -->
+  <main>
+    <section class="hero">
+      <h1 class="fade-in-up delay-1">
+        Enjoy all your favorite 
+        <span class="highlight shine-text">anime</span>
+      </h1>
+      <p class="fade-in-up delay-2">
+        <span class="shine-text">
+          Stream in 4K quality. No limits. Completely free.
+        </span>
+      </p>
+      <a href="/catalog" class="hero-btn fade-in-up delay-3">
+        <span class="shine-text">Explore Catalog</span>
+      </a>
+    </section>
+  </main>
 
-  <!-- Galerie -->
-  <section class="gallery">
-    <h2>Recently Added</h2>
-    <div class="card-container">
-      <div class="card">
-        <img src="https://via.placeholder.com/200x300?text=Anime+1" alt="Anime 1" />
-        <p>Anime Title 1</p>
+  <!-- Gallery Section avec carrousel corrigé -->
+  <section class="gallery fade-in-up" style="animation-delay:1.5s;">
+    <h2 class="shine-text">Recently Added</h2>
+
+    <div class="carousel-wrapper">
+      <button class="arrow left" onclick="scrollCarousel('left')">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="card-container" id="carousel">
+        <article class="card fade-in-up" style="animation-delay: 1.7s;">
+          <img src="/hentai.jpg" alt="Attack on Titan">
+          <h3>Attack on Titan</h3>
+          <p>Final season of the epic saga</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 1.8s;">
+          <img src="https://picsum.photos/220/280?random=2" alt="Demon Slayer">
+          <h3>Demon Slayer</h3>
+          <p>Entertainment District Arc</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 1.9s;">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=400&fit=crop" alt="Jujutsu Kaisen">
+          <h3>Jujutsu Kaisen</h3>
+          <p>Shibuya Incident Arc</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 2.0s;">
+          <img src="https://images.unsplash.com/photo-1606889464198-fcb18894cf50?w=300&h=400&fit=crop" alt="One Piece">
+          <h3>One Piece</h3>
+          <p>Wano Country Arc</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 2.1s;">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=400&fit=crop" alt="My Hero Academia">
+          <h3>My Hero Academia</h3>
+          <p>Final War Arc</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 2.2s;">
+          <img src="https://images.unsplash.com/photo-1606889464198-fcb18894cf50?w=300&h=400&fit=crop" alt="Chainsaw Man">
+          <h3>Chainsaw Man</h3>
+          <p>Public Safety Arc</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 2.3s;">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=400&fit=crop" alt="Spy x Family">
+          <h3>Spy x Family</h3>
+          <p>Season 2</p>
+        </article>
+
+        <article class="card fade-in-up" style="animation-delay: 2.4s;">
+          <img src="https://images.unsplash.com/photo-1606889464198-fcb18894cf50?w=300&h=400&fit=crop" alt="Tokyo Revengers">
+          <h3>Tokyo Revengers</h3>
+          <p>Tenjiku Arc</p>
+        </article>
       </div>
-      <div class="card">
-        <img src="https://via.placeholder.com/200x300?text=Anime+2" alt="Anime 2" />
-        <p>Anime Title 2</p>
-      </div>
-      <div class="card">
-        <img src="https://via.placeholder.com/200x300?text=Anime+3" alt="Anime 3" />
-        <p>Anime Title 3</p>
-      </div>
+
+      <button class="arrow right" onclick="scrollCarousel('right')">
+        <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
   </section>
 
   <!-- Pied de page -->
-  <footer>
-    <p>© 2025 VOG. Inspired by Netflix & HStream.</p>
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="footer-logo">VOG🌌</a>
+      <p class="footer-text">© 2025 VOG — Premium Anime Streaming</p>
+      <div class="footer-links">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <script>
+    // Particles Configuration
+    tsParticles.load("tsparticles", {
+      background: { color: { value: "transparent" } },
+      particles: {
+        color: { value: "#ffaa00" },
+        move: { enable: true, speed: 0.8 },
+        number: { value: 80 },
+        size: { value: { min: 1, max: 3 } },
+        opacity: { value: 0.6 },
+        links: { enable: false },
+        twinkle: {
+          particles: { enable: true, frequency: 0.05, color: "#ff00cc" }
+        }
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script>
+    // Smooth Scroll Configuration
+    const lenis = new Lenis({
+      duration: 0.75,
+      easing: t => t,
+      smoothWheel: true,
+      smoothTouch: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  </script>
+
+  <script>
+    // Carousel Functionality
+    document.addEventListener("DOMContentLoaded", () => {
+      const carousel = document.getElementById("carousel");
+      const leftArrow = document.querySelector(".arrow.left");
+      const rightArrow = document.querySelector(".arrow.right");
+
+      if (!carousel || !leftArrow || !rightArrow) return;
+
+      const scrollAmount = 280; // Width of one card + gap
+
+      function updateArrowVisibility() {
+        const atStart = carousel.scrollLeft <= 10;
+        const atEnd = carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 10;
+
+        leftArrow.style.opacity = atStart ? "0.4" : "1";
+        leftArrow.style.pointerEvents = atStart ? "none" : "auto";
+        
+        rightArrow.style.opacity = atEnd ? "0.4" : "1";
+        rightArrow.style.pointerEvents = atEnd ? "none" : "auto";
+      }
+
+      function scrollCarousel(direction) {
+        const scrollDistance = direction === 'left' ? -scrollAmount : scrollAmount;
+        carousel.scrollBy({
+          left: scrollDistance,
+          behavior: "smooth"
+        });
+      }
+
+      // Global function for onclick handlers
+      window.scrollCarousel = scrollCarousel;
+
+      // Event listeners
+      carousel.addEventListener("scroll", updateArrowVisibility);
+      
+      // Initial check
+      updateArrowVisibility();
+
+      // Touch/swipe support for mobile
+      let startX = 0;
+      let scrollStart = 0;
+
+      carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        scrollStart = carousel.scrollLeft;
+      });
+
+      carousel.addEventListener('touchmove', (e) => {
+        if (!startX) return;
+        
+        const currentX = e.touches[0].clientX;
+        const diff = startX - currentX;
+        carousel.scrollLeft = scrollStart + diff;
+      });
+
+      carousel.addEventListener('touchend', () => {
+        startX = 0;
+        scrollStart = 0;
+      });
+    });
+
+    // Search bar functionality
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchBar = document.querySelector(".search-bar");
+      
+      if (searchBar) {
+        searchBar.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            const query = searchBar.value.trim();
+            if (query) {
+              console.log("Searching for:", query);
+              // Add your search logic here
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

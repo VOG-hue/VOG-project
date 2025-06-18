@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "52c5fac9-e921-41d4-852b-e277d3d26630",
+      "username": "superadmin",
+      "password": "$2b$10$NJ6YHprSJZNgULot5I/DZ.N2Og9vfMI7wDI9nu0nt070y6pa8Ts5m",
+      "role": "superadmin"
+    }
+  ],
+  "animes": [
+    {
+      "id": "3376456b-1586-4c46-a272-df3c5accb5f8",
+      "title": "Shiranai Koto Shiritai no?",
+      "description": "The protagonist suddenly meets a sexy girl...",
+      "cover": "/anime/watch-shiranai-koto-shiritai/cover.jpg",
+      "video": "/anime/watch-shiranai-koto-shiritai/episode.mp4"
+    }
+  ]
+}

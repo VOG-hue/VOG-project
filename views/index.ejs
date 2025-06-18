@@ -1,621 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VOG - Watch HD Anime & Series</title>
+
+  <!-- Polices & icônes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Feuilles de style -->
+  <link rel="stylesheet" href="/css/style.css">
+<% if (user && user.role === 'superadmin') { %>
+  <link rel="stylesheet" href="/css/Bar-admin-supreme.css">
+<% } %>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    @keyframes form-shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
 
-    :root {
-      --primary-color: #ff6b35;
-      --primary-hover: #ff5722;
-      --bg-dark: #0f0f0f;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --text-secondary: #a0a0a0;
-      --text-muted: #666666;
-      --border-color: #333333;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      --glow-color: #ffaa00;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ========== ANIMATIONS ========== */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes shine {
-      0% {
-        background-position: -200% center;
-      }
-      100% {
-        background-position: 200% center;
-      }
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.7;
-      }
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .fade-in-up {
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
-    }
-
-    .delay-1 { animation-delay: 0.2s; }
-    .delay-2 { animation-delay: 0.4s; }
-    .delay-3 { animation-delay: 0.6s; }
-
-    .shine-text {
-      background: linear-gradient(90deg, var(--text-primary) 25%, var(--glow-color) 50%, var(--text-primary) 75%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shine 3s ease-in-out infinite;
-    }
-
-    /* ========== ANIMATED BACKGROUND ========== */
-    .animated-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 25% 25%, rgba(255, 170, 0, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 75% 75%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
-      z-index: -2;
-      animation: pulse 4s ease-in-out infinite;
-    }
-
-    /* ========== NAVBAR ========== */
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 5%;
-      background-color: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid var(--border-color);
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary-color);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .search-wrapper {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      margin: 0 3rem;
-      position: relative;
-    }
-
-    .search-bar {
-      width: 100%;
-      max-width: 500px;
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border-color);
-      padding: 0.8rem 3rem 0.8rem 1.2rem;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 400;
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1), 0 0 20px rgba(255, 170, 0, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .search-bar::placeholder {
-      color: var(--text-muted);
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus + .search-icon {
-      color: var(--glow-color);
-      text-shadow: 0 0 10px var(--glow-color);
-    }
-
-    .auth-buttons {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .btn {
-      padding: 0.7rem 1.6rem;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .login-btn {
-      background-color: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-    }
-
-    .login-btn:hover {
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-      box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .register-btn {
-      background-color: var(--primary-color);
-      color: white;
-    }
-
-    .register-btn:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
-    }
-
-    /* ========== HERO SECTION ========== */
-    .hero {
-      padding: 8rem 5% 6rem;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .hero .highlight {
-      background: linear-gradient(45deg, var(--primary-color), var(--glow-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      margin-bottom: 3rem;
-      font-weight: 400;
-    }
-
-    .hero-btn {
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      background: linear-gradient(45deg, var(--primary-color), var(--glow-color));
-      color: white;
-      text-decoration: none;
-      display: inline-block;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-    }
-
-    .hero-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.5);
-    }
-
-    .hero-btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .hero-btn:hover::after {
-      opacity: 1;
-    }
-
-    /* ========== GALLERY ========== */
-    .gallery {
-      padding: 6rem 5% 8rem;
-    }
-
-    .gallery h2 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      margin-bottom: 3rem;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      text-align: center;
-    }
-
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2rem;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.4s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(255, 170, 0, 0.1), rgba(255, 107, 53, 0.1));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1;
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card:hover {
-      transform: translateY(-12px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 170, 0, 0.2);
-      border-color: rgba(255, 107, 53, 0.5);
-    }
-
-    .card img {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      display: block;
+    .navbar.hide {
+      transform: translateY(-100%);
       transition: transform 0.3s ease;
     }
 
-    .card:hover img {
-      transform: scale(1.05);
+    #tsparticles,
+    .animated-bg,
+    .custom-particles {
+      pointer-events: none;
     }
 
-    .card p {
-      padding: 1.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ========== FOOTER ========== */
-    footer {
-      padding: 4rem 5%;
-      text-align: center;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-muted);
-      background-color: rgba(26, 26, 26, 0.5);
-      backdrop-filter: blur(10px);
-    }
-
-    .footer-text {
-      font-size: 0.9rem;
-      font-weight: 400;
-    }
-
-    /* ========== SCROLLBAR ========== */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg-dark);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(45deg, var(--primary-color), var(--glow-color));
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(45deg, var(--primary-hover), var(--glow-color));
-    }
-
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 768px) {
-      .navbar {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-      }
-
-      .search-wrapper {
-        width: 100%;
-        margin: 0;
-      }
-
-      .search-bar {
-        max-width: none;
-      }
-
-      .auth-buttons {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .hero {
-        padding: 4rem 5%;
-      }
-
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-
-      .hero p {
-        font-size: 1.1rem;
-      }
-
-      .card-container {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .gallery {
-        padding: 4rem 5%;
-      }
-
-      .gallery h2 {
-        font-size: 1.8rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 2rem;
-      }
-
-      .hero p {
-        font-size: 1rem;
-      }
-
-      .hero-btn {
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
-      }
-
-      .card-container {
-        grid-template-columns: 1fr;
-      }
+    .auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.75);
+      z-index: 9999;
     }
   </style>
 </head>
 
-<body>
-  <!-- tsParticles container -->
-  <div id="tsparticles"></div>
+<body data-loggedin="<%= user ? 'true' : 'false' %>">
 
-  <!-- Fond animé -->
-  <div class="animated-bg"></div>
+<div class="bg-gradient"></div>
+<div class="nebula-layer"></div>
+<div class="nebula-layer"></div>
+<div class="nebula-patch" style="top: 10%; left: 15%;"></div>
+<div class="nebula-patch" style="top: 60%; right: 10%;"></div>
+<div class="nebula-layer nebula-orange1"></div>
+<div class="nebula-layer nebula-orange2"></div>
+<div id="nebula-bg"></div>
 
-  <!-- Barre de navigation -->
-  <header class="navbar">
-    <a href="/" class="logo">🎬 <span class="shine-text">VOG</span></a>
+
+<!-- ✅ Header principal -->
+<header class="navbar">
+  <div class="container">
+    
+    <!-- Logo -->
+    <a href="/" class="logo" aria-label="Accueil VOG">
+      <span class="shine-text">VOG</span>
+    </a>
+
+    <!-- 🔍 Barre de recherche -->
     <div class="search-wrapper">
-      <input type="text" placeholder="Search anime, series..." class="search-bar" />
-      <i class="fas fa-search search-icon"></i>
+      <input 
+        type="text" 
+        class="search-bar" 
+        placeholder="Rechercher un anime..." 
+        aria-label="Recherche anime"
+      >
+      <i class="fas fa-search search-icon" aria-hidden="true"></i>
+      <div id="search-results" class="search-results"></div>
     </div>
-    <nav class="auth-buttons">
-      <a href="/login" class="btn login-btn fade-in-up" style="animation-delay: 1.3s;">Login</a>
-      <a href="/register" class="btn register-btn fade-in-up" style="animation-delay: 1.4s;">Register</a>
-    </nav>
-  </header>
 
-  <!-- Section principale -->
+    <!-- 👤 Zone utilisateur -->
+    <div class="auth-zone">
+      <% if (user) { %>
+        <!-- ✅ Panneau Super Admin -->
+        <%- include('Super-admin-panel', { user }) %>
+      <% } else { %>
+        <!-- 🔐 Boutons Auth -->
+        <nav class="auth-buttons" aria-label="Navigation utilisateur non connecté">
+          <button class="btn login-btn fade-in-up delay-3">Login</button>
+          <button class="btn register-btn fade-in-up delay-4">Register</button>
+        </nav>
+      <% } %>
+    </div>
+
+  </div>
+</header>
+
+
+ 
   <main>
+    <!-- Hero Section -->
     <section class="hero">
-      <h1 class="fade-in-up delay-1">Enjoy all your favorite <span class="highlight shine-text">anime</span></h1>
-      <p class="fade-in-up delay-2"><span class="shine-text">Stream in 4K quality. No limits. Completely free.</span></p>
-      <a href="/catalog" class="hero-btn fade-in-up delay-3">Explore Catalog</a>
-    </section>
-
-    <!-- Galerie -->
-    <section class="gallery fade-in-up" style="animation-delay: 1.5s;">
-      <h2 class="shine-text">Recently Added</h2>
-      <div class="card-container">
-        <article class="card fade-in-up" style="animation-delay: 1.7s;">
-          <img src="https://via.placeholder.com/220x280/1a1a1a/666666?text=Anime+1" alt="Anime 1" />
-          <p>Anime Title 1</p>
-        </article>
-        <article class="card fade-in-up" style="animation-delay: 1.9s;">
-          <img src="https://via.placeholder.com/220x280/1a1a1a/666666?text=Anime+2" alt="Anime 2" />
-          <p>Anime Title 2</p>
-        </article>
-        <article class="card fade-in-up" style="animation-delay: 2.1s;">
-          <img src="https://via.placeholder.com/220x280/1a1a1a/666666?text=Anime+3" alt="Anime 3" />
-          <p>Anime Title 3</p>
-        </article>
-        <article class="card fade-in-up" style="animation-delay: 2.3s;">
-          <img src="https://via.placeholder.com/220x280/1a1a1a/666666?text=Anime+4" alt="Anime 4" />
-          <p>Anime Title 4</p>
-        </article>
+      <div class="container">
+        <h1 class="fade-in-up delay-1">
+          Enjoy all your favorite <span class="highlight shine-text">anime</span>
+        </h1>
+        <p class="fade-in-up delay-2">
+          <span class="shine-text">Stream in 4K quality. No limits. Completely free.</span>
+        </p>
+        <a href="/catalog" class="hero-btn fade-in-up delay-3">
+          <span class="shine-text">Explore Catalog</span>
+        </a>
       </div>
     </section>
+
+    <!-- Carousel Section -->
+    <section class="gallery fade-in-up delay-5">
+      <h2 class="carousel-title shine-text">Recently Added</h2>
+
+      <% if (!animes || animes.length === 0) { %>
+        <p style="text-align:center; color:white;">Aucun anime disponible pour le moment.</p>
+      <% } else { %>
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollCarousel('left')">
+          <!-- SVG gauche -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          </svg>
+        </button>
+
+        <div class="carousel-inner">
+          <div class="card-container" id="carousel">
+            <% animes.forEach(anime => { %>
+              <article class="card" onclick="handleCardClick('<%= anime.id %>')">
+                <div class="image-container">
+                  <img src="<%= anime.cover %>" alt="<%= anime.title %>">
+                </div>
+                <div class="card-body">
+                  <h3><%= anime.title %></h3>
+                  <p><%= anime.description %></p>
+                </div>
+              </article>
+            <% }); %>
+          </div>
+        </div>
+
+        <button class="arrow right" onclick="scrollCarousel('right')">
+          <!-- SVG droite -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 1 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      </div>
+      <% } %>
+    </section>
+
+    <% if (user?.role?.toLowerCase?.().trim() === "superadmin") { %>
+    <!-- Formulaire d'ajout d'anime -->
+    <section class="anime-form-section">
+      <div class="form-glow"></div>
+      <h2 class="anime-form-title">✨ Ajouter un nouvel anime ✨</h2>
+      <form action="/add-anime" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">🎞️ Titre de l'anime</label>
+          <input type="text" id="title" name="title" required placeholder="Ex: Attack on Titan">
+        </div>
+
+        <div class="form-group">
+          <label for="description">📝 Description</label>
+          <textarea id="description" name="description" rows="4" required placeholder="Décrivez l'histoire, les personnages principaux..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="cover">🖼️ Image de couverture</label>
+          <div class="file-drop">
+            <input type="file" id="cover" name="cover" accept="image/*" required>
+            <div class="file-drop-content">
+              <div>📤</div>
+              <div><strong>Cliquez pour sélectionner une image</strong></div>
+              <div>PNG, JPG, JPEG acceptés</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="video">🎬 Épisode vidéo</label>
+          <div class="file-drop">
+            <input type="file" id="video" name="video" accept="video/mp4" required>
+            <div class="file-drop-content">
+              <div>🎥</div>
+              <div><strong>Cliquez pour sélectionner une vidéo</strong></div>
+              <div>Fichier MP4 uniquement</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-button">✨ Ajouter l'anime ✨</button>
+      </form>
+    </section>
+    <% } %>
   </main>
 
-  <!-- Pied de page -->
-  <footer class="fade-in-up" style="animation-delay: 2.5s;">
-    <p class="footer-text">© 2025 VOG - Premium Anime Streaming</p>
+<!-- Modal Auth -->
+<div id="auth-overlay" class="auth-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="auth-modal">
+    <button class="close-modal" onclick="hideAuthModal()" aria-label="Fermer la fenêtre d'authentification">✖</button>
+    <h2 id="auth-title">Connexion</h2>
+
+    <!-- Conteneur principal pour le contenu -->
+    <div class="auth-content">
+      <!-- Animations (cachées par défaut) -->
+      <div class="auth-animation success hidden" id="auth-success">
+        <div class="circle-loader"><div class="checkmark"></div></div>
+      </div>
+
+      <div class="auth-animation loading hidden" id="auth-loading">
+        <div class="circle-loader"></div>
+      </div>
+
+      <div class="auth-animation error hidden" id="auth-error">
+        <div class="crossmark">✖</div>
+      </div>
+
+      <!-- Formulaire (visible par défaut) -->
+      <div id="auth-form-container">
+        <form method="POST" action="/login" id="auth-form">
+          <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+          <input type="password" name="password" placeholder="Mot de passe" required />
+          <button type="submit">Valider</button>
+        </form>
+
+        <p id="auth-toggle-msg">
+          Pas de compte ? <span id="toggle-auth" style="cursor:pointer; color:#1e90ff;">Inscription</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col left">
+        <a href="/" class="footer-logo">VOG</a>
+      </div>
+      <div class="footer-col center">
+        <p class="footer-text">© 2025 VOG — Premium Anime Streaming</p>
+      </div>
+      <div class="footer-col right footer-links">
+        <a href="#">Conditions</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/2.12.0/tsparticles.bundle.min.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      tsParticles.load("tsparticles", {
-        fullScreen: { enable: true, zIndex: -1 },
-        background: { color: "transparent" },
-        particles: {
-          number: { value: 80, density: { enable: true, area: 800 } },
-          color: { value: ["#ffaa00", "#ff6b35"] },
-          shape: { type: "circle" },
-          opacity: {
-            value: 0.8,
-            anim: { enable: true, speed: 1, opacity_min: 0.3, sync: false }
-          },
-          size: {
-            value: 3,
-            random: true,
-            anim: { enable: true, speed: 2, size_min: 1, sync: false }
-          },
-          move: {
-            enable: true,
-            speed: 1,
-            direction: "none",
-            outModes: { default: "bounce" }
-          }
-        },
-        interactivity: {
-          events: {
-            onHover: { enable: true, mode: "repulse" },
-            onClick: { enable: true, mode: "push" }
-          },
-          modes: {
-            repulse: { distance: 100, duration: 0.4 },
-            push: { quantity: 4 }
-          }
-        }
-      });
-    });
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.35/dist/lenis.min.js"></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/auth-full.js" defer></script>
+<script src="/js/search.js" defer></script>
 
-    // Scroll fluide
-    let currentScroll = 0;
-    let targetScroll = 0;
-    const ease = 0.08;
+<script>
+  // S'assurer que hideAuthModal existe
+  if (typeof hideAuthModal === 'undefined') {
+    window.hideAuthModal = function () {
+      const overlay = document.getElementById('auth-overlay');
+      if (overlay) {
+        overlay.classList.add('hidden');
+      }
+    };
+  }
 
-    function smoothScroll() {
-      currentScroll += (targetScroll - currentScroll) * ease;
-      window.scrollTo(0, currentScroll);
-      requestAnimationFrame(smoothScroll);
+  document.addEventListener("DOMContentLoaded", () => {
+    // Navbar auto-hide
+    const navbar = document.querySelector(".navbar");
+    let lastScroll = window.scrollY;
+
+    function updateNavbar() {
+      const currentScroll = window.scrollY;
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        navbar.classList.add("hide");
+      } else if (currentScroll < lastScroll || currentScroll <= 50) {
+        navbar.classList.remove("hide");
+      }
+      lastScroll = currentScroll;
     }
 
-    window.addEventListener("load", () => {
-      currentScroll = window.scrollY;
-      targetScroll = window.scrollY;
-      smoothScroll();
+    // Smooth scroll avec Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      direction: "vertical"
+    });
 
-      window.addEventListener("wheel", (e) => {
+    function raf(time) {
+      lenis.raf(time);
+      updateNavbar();
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Auth & Navigation
+    const isLoggedIn = document.body.dataset.loggedin === "true";
+
+    window.handleCardClick = function (animeId) {
+      if (!isLoggedIn) {
+        document.getElementById("auth-overlay").classList.remove("hidden");
+      } else {
+        window.location.href = `/anime/${animeId}`;
+      }
+    };
+
+    window.scrollCarousel = function (direction) {
+      const container = document.getElementById("carousel");
+      const card = container?.querySelector(".card");
+      if (!card) return;
+      const cardWidth = card.offsetWidth + 24;
+      container.scrollBy({
+        left: direction === "right" ? cardWidth * 5 : -cardWidth * 5,
+        behavior: "smooth"
+      });
+    };
+
+    // Fermeture de l'overlay auth
+    const closeButton = document.querySelector('.close-modal');
+    if (closeButton) {
+      closeButton.addEventListener('click', function (e) {
         e.preventDefault();
-        targetScroll += e.deltaY * 0.8;
-        targetScroll = Math.max(0, Math.min(
-          document.body.scrollHeight - window.innerHeight,
-          targetScroll
-        ));
-      }, { passive: false });
-    });
+        e.stopPropagation();
+        hideAuthModal();
+      });
+    }
 
-    // Effets au survol des cartes
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-12px) scale(1.02)';
+    const authOverlay = document.getElementById('auth-overlay');
+    if (authOverlay) {
+      authOverlay.addEventListener('click', function (e) {
+        if (e.target === authOverlay) {
+          hideAuthModal();
+        }
       });
-      
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-      });
+    }
+
+    
+
+  });
+</script>
+
+<script>
+  const cont = document.getElementById('nebula-bg');
+  const N = 200;
+  for (let i = 0; i < N; i++) {
+    const p = document.createElement('div');
+    Object.assign(p.style, {
+      position: 'absolute', bottom: '-10px',
+      left: Math.random() * 100 + 'vw',
+      width: p.style.height = (3 + Math.random() * 6) + 'px',
+      background: 'rgba(255,140,0,' + (0.6 + Math.random() * 0.4) + ')',
+      borderRadius: '50%',
+      filter: 'blur(2px)',
+      animation: `rise ${(8 + Math.random() * 12).toFixed(1)}s linear ${Math.random()*5}s infinite`
     });
-  </script>
+    cont.appendChild(p);
+  }
+</script>
+<style>
+  #nebula-bg {
+    position: fixed; inset: 0;
+    overflow: hidden; pointer-events: none;
+    z-index: -7;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-120vh); opacity: 0; }
+  }
+</style>
+
 </body>
 </html>
